@@ -3,6 +3,7 @@ using namespace std;
 
 class undirectedAdjacencyMatrix
 {
+public:
     vector<vector<int>> unweightedAdjacencyMatrix(int v, int e, vector<vector<int>> edges)
     {
         vector<vector<int>> adj(v + 1, vector<int>(v + 1, 0));
@@ -39,6 +40,7 @@ class undirectedAdjacencyMatrix
 
 class directedAdjacencyMatrix
 {
+public:
     vector<vector<int>> unweightedAdjacencyMatrix(int v, int e, vector<vector<int>> edges)
     {
         vector<vector<int>> adj(v + 1, vector<int>(v + 1, 0));
