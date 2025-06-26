@@ -45,7 +45,9 @@ private:
         for (int nbr : adj[node])
         {
             if (!vis[nbr])
+            {
                 dfsHelper(nbr, adj, vis, res);
+            }
         }
     }
 
