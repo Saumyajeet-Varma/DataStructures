@@ -5,17 +5,19 @@ struct ListNode
 {
     int val;
     ListNode *next;
-    ListNode() : val(0), next(nullptr) {}
-    ListNode(int x) : val(x), next(nullptr) {}
-    ListNode(int x, ListNode *next) : val(x), next(next) {}
+    ListNode *prev;
+    ListNode() : val(0), next(nullptr), prev(nullptr) {}
+    ListNode(int x) : val(x), next(nullptr), prev(nullptr) {}
+    ListNode(int x, ListNode *prev, ListNode *next) : val(x), next(next), prev(prev) {}
 };
 
 class InsertNode
 {
-public:
     ListNode *insertHead(ListNode *head, int val)
     {
-        ListNode *newHead = new ListNode(val, head);
+        ListNode *newHead = new ListNode(val, head, nullptr);
+        head->prev = newHead;
+
         return newHead;
     }
 
@@ -36,6 +38,7 @@ public:
         }
 
         tail->next = newTail;
+        newTail->prev = tail;
 
         return head;
     }
@@ -62,8 +65,10 @@ public:
             curr = curr->next;
         }
 
-        ListNode *newNode = new ListNode(val, curr->next);
+        ListNode *nextNode = curr->next;
+        ListNode *newNode = new ListNode(val, nextNode, curr);
 
+        nextNode->prev = newNode;
         curr->next = newNode;
 
         return head;
@@ -71,8 +76,20 @@ public:
 
     void insertAfterNode(ListNode *node, int val)
     {
-        ListNode *newNode = new ListNode(val, node->next);
+        ListNode *nextNode = node->next;
+        ListNode *newNode = new ListNode(val, nextNode, node);
+
+        nextNode->prev = newNode;
         node->next = newNode;
+    }
+
+    void insertBeforeNode(ListNode *node, int val)
+    {
+        ListNode *prevNode = node->prev;
+        ListNode *newNode = new ListNode(val, node, prevNode);
+
+        prevNode->next = newNode;
+        node->prev = newNode;
     }
 };
 
@@ -87,6 +104,7 @@ class DeleteNode
 
         ListNode *newHead = head->next;
 
+        newHead->prev = nullptr;
         head->next = nullptr;
 
         delete head;
@@ -98,7 +116,6 @@ class DeleteNode
     {
         if (!head || !head->next)
         {
-            delete head;
             return nullptr;
         }
 
@@ -109,18 +126,21 @@ class DeleteNode
             newTail = newTail->next;
         }
 
-        delete newTail->next;
+        ListNode *tail = newTail->next;
 
         newTail->next = nullptr;
+        tail->prev = nullptr;
 
-        return head;
+        delete tail;
+
+        return newTail;
     }
 
     ListNode *deleteAtKthPosition(ListNode *head, int k)
     {
         if (k == 1)
         {
-            deleteHead(head);
+            return deleteHead(head);
         }
 
         int count = 1;
@@ -139,7 +159,13 @@ class DeleteNode
         }
 
         ListNode *temp = curr->next;
-        curr->next = curr->next->next;
+        ListNode *nextNode = temp->next;
+
+        curr->next = nextNode;
+        nextNode->prev = curr;
+
+        temp->next = nullptr;
+        temp->prev = nullptr;
 
         delete temp;
 
@@ -148,17 +174,35 @@ class DeleteNode
 
     void deleteAfterNode(ListNode *node)
     {
-        ListNode *temp = node->next;
-        node->next = node->next->next;
+        ListNode *delNode = node->next;
 
-        delete temp;
+        node->next = delNode->next;
+        delNode->next->prev = node;
+
+        delNode->next = nullptr;
+        delNode->prev = nullptr;
+
+        delete delNode;
+    }
+
+    void deleteBeforeNode(ListNode *node)
+    {
+        ListNode *delNode = node->prev;
+
+        node->prev = delNode->prev;
+        delNode->prev->next = node;
+
+        delNode->next = nullptr;
+        delNode->prev = nullptr;
+
+        delete delNode;
     }
 };
 
 class Operations
 {
 public:
-    void printLL(ListNode *head)
+    void printDLL(ListNode *head)
     {
         ListNode *curr = head;
 
@@ -191,7 +235,7 @@ public:
         return tail;
     }
 
-    int lengthOfLL(ListNode *head)
+    int lengthOfDLL(ListNode *head)
     {
         int len = 0;
         ListNode *curr = head;
