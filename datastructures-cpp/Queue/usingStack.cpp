@@ -1,7 +1,7 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-class MyQueue1
+class Queue1
 {
 private:
     stack<int> stk1;
@@ -57,7 +57,7 @@ public:
     }
 };
 
-class MyQueue2
+class Queue2
 {
 private:
     stack<int> stk1;

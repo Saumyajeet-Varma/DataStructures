@@ -1,7 +1,7 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-class MyQueue
+class Queue
 {
 private:
     int *arr;
@@ -11,7 +11,7 @@ private:
     int maxSize;
 
 public:
-    MyQueue()
+    Queue()
     {
         start = -1;
         end = -1;
@@ -20,7 +20,7 @@ public:
         arr = new int[maxSize];
     }
 
-    MyQueue(int maxSize)
+    Queue(int maxSize)
     {
         start = -1;
         end = -1;

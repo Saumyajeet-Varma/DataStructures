@@ -1,7 +1,7 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-class MyStack
+class Stack
 {
 private:
     int *arr;
@@ -9,14 +9,14 @@ private:
     int maxSize;
 
 public:
-    MyStack()
+    Stack()
     {
         top = -1;
         maxSize = 100;
         arr = new int[maxSize];
     }
 
-    MyStack(int maxSize)
+    Stack(int maxSize)
     {
         top = -1;
         maxSize = maxSize;
